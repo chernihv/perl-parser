@@ -25,7 +25,7 @@ post '/' => sub {
         open(FILE, ">> $FILE_NAME");
         print FILE "Headers from $url with title '$title': \n$headers \n";
         close(FILE);
-        $c->render(template => 'index');
+        $c->render(template => 'index', headers => $headers);
     };
 
 app->start;
@@ -41,14 +41,20 @@ To learn more, you can browse through the documentation
 @@ layouts/default.html.ep
 <!DOCTYPE html>
 <html>
-  <head><title><%= title %></title></head>
-  <body>
-    <form method='post'>
-    <label>Get headers from url</label>
-    <br>
-    <input name='url'>
-    <br>
-    <button type="submit">Send</button>
-    </form>
+    <head>
+      <meta charset="utf-8">
+      <title><%= title %></title>
+    </head>
+    <body>
+        <form method='post'>
+            <label>Get headers from url</label>
+            <br>
+            <input name='url' placeholder='http://ya.ru'>
+            <br>
+            <button type="submit">Send</button>
+        </form>
+        <pre>
+            <%= stash("headers") =%>
+        </pre>
   </body>
 </html>
